@@ -11,23 +11,24 @@
 <style>
 
 body{
-font-family:Arial;
+font-family:Arial, sans-serif;
 background:linear-gradient(135deg,#dbeafe,#ffffff);
 text-align:center;
-padding:30px;
+padding:20px;
 }
 
-.box{
+.container{
 background:white;
-max-width:850px;
+max-width:900px;
 margin:auto;
 padding:30px;
-border-radius:20px;
-box-shadow:0 5px 20px #aaa;
+border-radius:25px;
+box-shadow:0 5px 25px #aaa;
 }
 
 h1{
-font-size:40px;
+font-size:42px;
+color:#2563eb;
 }
 
 input{
@@ -35,24 +36,29 @@ width:80%;
 padding:15px;
 margin:10px;
 font-size:20px;
-border-radius:10px;
+border-radius:12px;
 border:1px solid #aaa;
 }
 
 button{
-padding:15px 40px;
-font-size:20px;
+padding:15px 35px;
+margin:10px;
+font-size:18px;
 background:#2563eb;
 color:white;
-border:0;
+border:none;
 border-radius:12px;
 cursor:pointer;
 }
 
+button:hover{
+background:#1d4ed8;
+}
+
 table{
 width:100%;
-margin-top:25px;
 border-collapse:collapse;
+margin-top:25px;
 }
 
 td,th{
@@ -60,16 +66,37 @@ border:1px solid #ccc;
 padding:15px;
 }
 
-.win{
-font-size:28px;
+th{
+background:#eef2ff;
+}
+
+.check{
+font-size:25px;
+}
+
+.winner{
+font-size:30px;
 font-weight:bold;
 margin-top:25px;
 }
 
-.explain{
+.explanation{
 font-size:18px;
-margin-top:15px;
-line-height:1.6;
+line-height:1.7;
+margin-top:20px;
+}
+
+.history{
+background:#f8fafc;
+padding:15px;
+margin-top:25px;
+border-radius:15px;
+text-align:right;
+}
+
+.item{
+padding:10px;
+border-bottom:1px solid #ddd;
 }
 
 </style>
@@ -80,25 +107,44 @@ line-height:1.6;
 <body>
 
 
-<div class="box">
+<div class="container">
 
 <h1>🧠 Compare AI</h1>
 
-<p>השווה בין שני דברים וקבל החלטה</p>
+<p>
+השווה בין שני דברים וקבל החלטה חכמה
+</p>
 
 
-<input id="a" placeholder="דבר ראשון">
+<input id="first" placeholder="הכנס דבר ראשון">
 
 <br>
 
-<input id="b" placeholder="דבר שני">
+<input id="second" placeholder="הכנס דבר שני">
 
-<br><br>
 
-<button onclick="compare()">השווה</button>
+<br>
+
+
+<button onclick="compare()">
+השווה
+</button>
+
+
+<button onclick="showHistory()">
+📜 היסטוריה
+</button>
+
+
+<button onclick="clearHistory()">
+🗑 מחק היסטוריה
+</button>
 
 
 <div id="result"></div>
+
+
+<div id="history"></div>
 
 
 </div>
@@ -108,42 +154,71 @@ line-height:1.6;
 <script>
 
 
+let history =
+JSON.parse(localStorage.getItem("compareHistory")) || [];
+
+
+
+function randomWinner(a,b){
+
+let r=Math.random();
+
+if(r<0.5){
+return a;
+}
+
+else{
+return b;
+}
+
+}
+
+
+
 function compare(){
 
 
-let a=document.getElementById("a").value.trim();
-let b=document.getElementById("b").value.trim();
+let first =
+document.getElementById("first").value.trim();
 
 
-if(!a || !b){
-alert("כתוב שני דברים");
+let second =
+document.getElementById("second").value.trim();
+
+
+
+if(!first || !second){
+
+alert("צריך להכניס שני דברים");
 return;
+
 }
 
 
-if(a.toLowerCase()==b.toLowerCase()){
+
+if(first.toLowerCase()==second.toLowerCase()){
 
 document.getElementById("result").innerHTML=
-"<h2>אי אפשר להשוות דבר לעצמו 😄</h2>";
+`
+<h2>😄 אי אפשר להשוות משהו לעצמו</h2>
+`;
 
 return;
 
 }
 
 
-let text=(a+" "+b).toLowerCase();
+
+let text =
+(first+" "+second).toLowerCase();
+
 
 
 let categories=[];
-let explanation="";
+
+let type="השוואה כללית";
 
 
-let scoreA=0;
-let scoreB=0;
-
-
-
-// כדורגל
 
 if(
 text.includes("מסי") ||
@@ -152,20 +227,25 @@ text.includes("אמבפה") ||
 text.includes("האלנד")
 ){
 
+
+type="⚽ כדורגל";
+
+
 categories=[
-["דריבל",a],
-["בעיטות",b],
-["מסירות",a],
-["כוח פיזי",b],
-["סיומת",b]
+
+"מהירות",
+"בעיטות",
+"דריבל",
+"מסירות",
+"כוח פיזי",
+"סיומת"
+
 ];
 
-explanation="בהשוואת שחקנים בודקים יכולות שונות כמו טכניקה, בעיטות, כוח והשפעה במשחק.";
 
 }
 
 
-// טלפונים
 
 else if(
 text.includes("אייפון") ||
@@ -174,156 +254,309 @@ text.includes("iphone") ||
 text.includes("samsung")
 ){
 
+
+type="📱 טכנולוגיה";
+
+
 categories=[
-["מצלמה",a],
-["מחיר",b],
-["ביצועים",a],
-["סוללה",b],
-["עיצוב",a]
+
+"מצלמה",
+"סוללה",
+"ביצועים",
+"מחיר",
+"עיצוב"
+
 ];
 
-explanation="בטלפונים אין מכשיר שמנצח בהכול. כל אחד חזק בתחומים שונים.";
 
 }
 
 
-// נושאים של דעה
+else{
 
-else if(
-text.includes("אבא") ||
-text.includes("אמא")
-){
 
-document.getElementById("result").innerHTML=
-`
+categories=[
 
-<h2>${a} מול ${b}</h2>
+"איכות",
+"מחיר",
+"נוחות",
+"פופולריות",
+"יתרונות"
 
-<h3>❤️ השוואה אישית</h3>
+];
 
-<p class="explain">
-אין תשובה אחת נכונה. אנשים שונים יבחרו אחרת לפי הקשר האישי,
-החוויות והקשר המשפחתי שלהם.
-</p>
+
+}
+
+
+let scoreFirst = 0;
+let scoreSecond = 0;
+
+let rows = "";
+
+let details = [];
+
+
+
+categories.forEach(category => {
+
+
+let winner = randomWinner(first, second);
+
+
+if(winner === first){
+
+scoreFirst++;
+
+}
+else{
+
+scoreSecond++;
+
+}
+
+
+rows += `
+
+<tr>
+
+<td>${category}</td>
+
+<td class="check">
+${winner === first ? "✅" : ""}
+</td>
+
+
+<td class="check">
+${winner === second ? "✅" : ""}
+</td>
+
+</tr>
 
 `;
+
+
+details.push(
+`${category}: היתרון אצל ${winner}`
+);
+
+
+});
+
+
+
+let finalWinner;
+
+if(scoreFirst > scoreSecond){
+
+finalWinner = first;
+
+}
+
+else if(scoreSecond > scoreFirst){
+
+finalWinner = second;
+
+}
+
+else{
+
+finalWinner = randomWinner(first, second);
+
+}
+
+
+
+let explanation = `
+
+ההשוואה בין <b>${first}</b> לבין <b>${second}</b> נבדקה לפי ${categories.length} קטגוריות בתחום ${type}.
+
+<br><br>
+
+`;
+
+
+
+details.forEach(d=>{
+
+explanation += "• " + d + "<br>";
+
+});
+
+
+
+explanation += `
+
+<br>
+
+בסיכום הכולל, ${finalWinner} קיבל יותר יתרונות בקטגוריות שנבדקו ולכן נבחר כמנצח.
+
+חשוב לזכור: התוצאה מבוססת על קטגוריות ההשוואה ולא אומרת שכל אדם בהכרח יעדיף אותו.
+
+`;
+
+
+
+let result = `
+
+
+<h2>${first} מול ${second}</h2>
+
+<h3>${type}</h3>
+
+
+<table>
+
+<tr>
+
+<th>קטגוריה</th>
+
+<th>${first}</th>
+
+<th>${second}</th>
+
+</tr>
+
+
+${rows}
+
+
+</table>
+
+
+<div class="winner">
+
+🏆 המנצח: ${finalWinner}
+
+</div>
+
+
+<div class="explanation">
+
+${explanation}
+
+</div>
+
+
+`;
+
+
+
+document.getElementById("result").innerHTML = result;
+
+
+
+let save = {
+
+first:first,
+
+second:second,
+
+winner:finalWinner,
+
+date:new Date().toLocaleString("he-IL")
+
+};
+
+
+
+history.unshift(save);
+
+
+
+if(history.length > 20){
+
+history.pop();
+
+}
+
+
+
+localStorage.setItem(
+"compareHistory",
+JSON.stringify(history)
+);
+
+
+
+}
+
+
+
+
+function showHistory(){
+
+
+let box = document.getElementById("history");
+
+
+if(history.length===0){
+
+box.innerHTML =
+"<h3>אין עדיין השוואות</h3>";
 
 return;
 
 }
 
 
-// כללי
 
-else{
+let html = `
 
-categories=[
-["איכות",a],
-["מחיר",b],
-["נוחות",a],
-["פופולריות",b],
-["יתרונות",a]
-];
-
-explanation=
-"ההשוואה נעשתה לפי מספר קטגוריות כלליות. בתחומים שונים יכולים להיות יתרונות שונים.";
-
-}
-
-
-
-// בניית טבלה
-
-
-let html=`
-
-<h2>${a} מול ${b}</h2>
-
-
-<table>
-
-<tr>
-<th>קטגוריה</th>
-<th>${a}</th>
-<th>${b}</th>
-</tr>
+<h2>📜 השוואות אחרונות</h2>
 
 `;
 
 
 
-categories.forEach(c=>{
+history.forEach(item=>{
 
 
-let category=c[0];
-let winner=c[1];
+html += `
 
+<div class="item">
 
-if(winner==a){
-scoreA++;
-}else{
-scoreB++;
-}
+<b>${item.first}</b> מול <b>${item.second}</b>
 
+<br>
 
-html+=`
+🏆 ${item.winner}
 
-<tr>
+<br>
 
-<td>${category}</td>
+${item.date}
 
-<td>${winner==a ? "✅":""}</td>
+</div>
 
-<td>${winner==b ? "✅":""}</td>
-
-</tr>
 
 `;
 
 });
 
 
-
-let winner;
-
-
-if(scoreA>scoreB){
-winner=a;
-}
-
-else{
-winner=b;
-}
-
-
-
-html+=`
-
-</table>
-
-
-<div class="win">
-🏆 המנצח: ${winner}
-</div>
-
-
-<div class="explain">
-${explanation}
-
-<br><br>
-
-${winner} ניצח כי קיבל יתרון ביותר קטגוריות בהשוואה הזאת.
-</div>
-
-`;
-
-
-
-document.getElementById("result").innerHTML=html;
+box.innerHTML = html;
 
 
 }
 
+
+
+
+function clearHistory(){
+
+
+history=[];
+
+
+localStorage.removeItem(
+"compareHistory"
+);
+
+
+document.getElementById("history").innerHTML =
+"<h3>ההיסטוריה נמחקה</h3>";
+
+}
 
 
 </script>
