@@ -2,6 +2,7 @@
 <html lang="he" dir="rtl">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -9,83 +10,66 @@
 
 <style>
 
-body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg,#e0e7ff,#ffffff);
-    text-align:center;
-    padding:30px;
+body{
+font-family:Arial;
+background:linear-gradient(135deg,#dbeafe,#ffffff);
+text-align:center;
+padding:30px;
 }
 
-.container {
-    background:white;
-    max-width:850px;
-    margin:auto;
-    padding:30px;
-    border-radius:20px;
-    box-shadow:0 5px 25px #bbb;
+.box{
+background:white;
+max-width:850px;
+margin:auto;
+padding:30px;
+border-radius:20px;
+box-shadow:0 5px 20px #aaa;
 }
 
-h1 {
-    font-size:42px;
+h1{
+font-size:40px;
 }
 
-.subtitle {
-    font-size:20px;
-    color:#555;
+input{
+width:80%;
+padding:15px;
+margin:10px;
+font-size:20px;
+border-radius:10px;
+border:1px solid #aaa;
 }
 
-input {
-    width:80%;
-    padding:15px;
-    margin:10px;
-    font-size:20px;
-    border-radius:12px;
-    border:1px solid #aaa;
+button{
+padding:15px 40px;
+font-size:20px;
+background:#2563eb;
+color:white;
+border:0;
+border-radius:12px;
+cursor:pointer;
 }
 
-button {
-    background:#2563eb;
-    color:white;
-    padding:15px 45px;
-    border:none;
-    border-radius:12px;
-    font-size:20px;
-    cursor:pointer;
+table{
+width:100%;
+margin-top:25px;
+border-collapse:collapse;
 }
 
-button:hover {
-    background:#1d4ed8;
+td,th{
+border:1px solid #ccc;
+padding:15px;
 }
 
-table {
-    width:100%;
-    margin-top:30px;
-    border-collapse:collapse;
+.win{
+font-size:28px;
+font-weight:bold;
+margin-top:25px;
 }
 
-th,td {
-    border:1px solid #ccc;
-    padding:15px;
-    font-size:18px;
-}
-
-th {
-    background:#eef2ff;
-}
-
-.check {
-    font-size:25px;
-}
-
-.winner {
-    margin-top:30px;
-    font-size:30px;
-    font-weight:bold;
-}
-
-.info {
-    margin-top:15px;
-    color:#555;
+.explain{
+font-size:18px;
+margin-top:15px;
+line-height:1.6;
 }
 
 </style>
@@ -96,32 +80,22 @@ th {
 <body>
 
 
-<div class="container">
-
+<div class="box">
 
 <h1>🧠 Compare AI</h1>
 
-<div class="subtitle">
-האפליקציה שעוזרת לך לבחור נכון
-</div>
+<p>השווה בין שני דברים וקבל החלטה</p>
 
 
-<br>
-
-
-<input id="first" placeholder="דבר ראשון">
+<input id="a" placeholder="דבר ראשון">
 
 <br>
 
-<input id="second" placeholder="דבר שני">
-
+<input id="b" placeholder="דבר שני">
 
 <br><br>
 
-
-<button onclick="compare()">
-השווה
-</button>
+<button onclick="compare()">השווה</button>
 
 
 <div id="result"></div>
@@ -137,30 +111,101 @@ th {
 function compare(){
 
 
-let first =
-document.getElementById("first").value.trim();
+let a=document.getElementById("a").value.trim();
+let b=document.getElementById("b").value.trim();
 
 
-let second =
-document.getElementById("second").value.trim();
+if(!a || !b){
+alert("כתוב שני דברים");
+return;
+}
 
 
+if(a.toLowerCase()==b.toLowerCase()){
 
-if(!first || !second){
+document.getElementById("result").innerHTML=
+"<h2>אי אפשר להשוות דבר לעצמו 😄</h2>";
 
-alert("תכתוב שני דברים להשוואה");
 return;
 
 }
 
 
+let text=(a+" "+b).toLowerCase();
 
-if(first.toLowerCase() === second.toLowerCase()){
 
-document.getElementById("result").innerHTML =
+let categories=[];
+let explanation="";
+
+
+let scoreA=0;
+let scoreB=0;
+
+
+
+// כדורגל
+
+if(
+text.includes("מסי") ||
+text.includes("רונאלדו") ||
+text.includes("אמבפה") ||
+text.includes("האלנד")
+){
+
+categories=[
+["דריבל",a],
+["בעיטות",b],
+["מסירות",a],
+["כוח פיזי",b],
+["סיומת",b]
+];
+
+explanation="בהשוואת שחקנים בודקים יכולות שונות כמו טכניקה, בעיטות, כוח והשפעה במשחק.";
+
+}
+
+
+// טלפונים
+
+else if(
+text.includes("אייפון") ||
+text.includes("גלקסי") ||
+text.includes("iphone") ||
+text.includes("samsung")
+){
+
+categories=[
+["מצלמה",a],
+["מחיר",b],
+["ביצועים",a],
+["סוללה",b],
+["עיצוב",a]
+];
+
+explanation="בטלפונים אין מכשיר שמנצח בהכול. כל אחד חזק בתחומים שונים.";
+
+}
+
+
+// נושאים של דעה
+
+else if(
+text.includes("אבא") ||
+text.includes("אמא")
+){
+
+document.getElementById("result").innerHTML=
 `
-<h2>😄 אי אפשר להשוות משהו לעצמו</h2>
-<p>נסה לבחור שני דברים שונים.</p>
+
+<h2>${a} מול ${b}</h2>
+
+<h3>❤️ השוואה אישית</h3>
+
+<p class="explain">
+אין תשובה אחת נכונה. אנשים שונים יבחרו אחרת לפי הקשר האישי,
+החוויות והקשר המשפחתי שלהם.
+</p>
+
 `;
 
 return;
@@ -168,174 +213,56 @@ return;
 }
 
 
-
-let text =
-(first+" "+second).toLowerCase();
-
-
-
-let categories=[];
-let area="🔍 השוואה כללית";
-
-
-
-// זיהוי כדורגל
-
-if(
-
-text.includes("מסי") ||
-text.includes("רונאלדו") ||
-text.includes("אמבפה") ||
-text.includes("האלנד") ||
-text.includes("mbappe") ||
-text.includes("haaland")
-
-){
-
-
-area="⚽ כדורגל";
-
-
-categories=[
-
-["מהירות",2],
-["בעיטות",1],
-["דריבל",1],
-["סיומת",2],
-["מסירות",1],
-["כוח פיזי",2],
-["תארים",1],
-["השפעה במשחק",1]
-
-];
-
-
-}
-
-
-
-// טלפונים
-
-else if(
-
-text.includes("אייפון") ||
-text.includes("iphone") ||
-text.includes("גלקסי") ||
-text.includes("סמסונג") ||
-text.includes("samsung")
-
-){
-
-
-area="📱 טכנולוגיה";
-
-
-categories=[
-
-["מצלמה",1],
-["סוללה",2],
-["ביצועים",1],
-["מחיר",2],
-["עיצוב",1],
-["נוחות שימוש",1]
-
-];
-
-
-}
-
-
-
-// רכבים
-
-else if(
-
-text.includes("למבורגיני") ||
-text.includes("סקודה") ||
-text.includes("bmw") ||
-text.includes("מרצדס") ||
-text.includes("רכב")
-
-){
-
-
-area="🚗 רכבים";
-
-
-categories=[
-
-["מהירות",1],
-["מחיר",2],
-["נוחות",2],
-["אמינות",2],
-["עיצוב",1],
-["ביצועים",1]
-
-];
-
-
-}
-
-
-
 // כללי
 
-
-else {
-
+else{
 
 categories=[
-
-["איכות",1],
-["מחיר",2],
-["יתרונות",1],
-["שימושיות",2],
-["פופולריות",1]
-
+["איכות",a],
+["מחיר",b],
+["נוחות",a],
+["פופולריות",b],
+["יתרונות",a]
 ];
 
+explanation=
+"ההשוואה נעשתה לפי מספר קטגוריות כלליות. בתחומים שונים יכולים להיות יתרונות שונים.";
 
 }
 
 
 
-let score1=0;
-let score2=0;
-
+// בניית טבלה
 
 
 let html=`
 
-<h2>${first} מול ${second}</h2>
-
-<h3>${area}</h3>
+<h2>${a} מול ${b}</h2>
 
 
 <table>
 
 <tr>
 <th>קטגוריה</th>
-<th>${first}</th>
-<th>${second}</th>
+<th>${a}</th>
+<th>${b}</th>
 </tr>
 
 `;
 
 
 
-categories.forEach(item=>{
+categories.forEach(c=>{
 
 
-let name=item[0];
-let winner=item[1];
+let category=c[0];
+let winner=c[1];
 
 
-if(winner===1){
-score1++;
-}
-
-else{
-score2++;
+if(winner==a){
+scoreA++;
+}else{
+scoreB++;
 }
 
 
@@ -343,29 +270,30 @@ html+=`
 
 <tr>
 
-<td>${name}</td>
+<td>${category}</td>
 
-<td class="check">
-${winner===1 ? "✅" : ""}
-</td>
+<td>${winner==a ? "✅":""}</td>
 
-
-<td class="check">
-${winner===2 ? "✅" : ""}
-</td>
-
+<td>${winner==b ? "✅":""}</td>
 
 </tr>
 
 `;
 
-
 });
 
 
 
-let finalWinner =
-score1 > score2 ? first : second;
+let winner;
+
+
+if(scoreA>scoreB){
+winner=a;
+}
+
+else{
+winner=b;
+}
 
 
 
@@ -374,17 +302,17 @@ html+=`
 </table>
 
 
-<div class="winner">
-
-🏆 המנצח: ${finalWinner}
-
+<div class="win">
+🏆 המנצח: ${winner}
 </div>
 
 
-<div class="info">
+<div class="explain">
+${explanation}
 
-ההשוואה מבוססת על הקטגוריות החשובות בתחום.
+<br><br>
 
+${winner} ניצח כי קיבל יתרון ביותר קטגוריות בהשוואה הזאת.
 </div>
 
 `;
@@ -395,6 +323,7 @@ document.getElementById("result").innerHTML=html;
 
 
 }
+
 
 
 </script>
