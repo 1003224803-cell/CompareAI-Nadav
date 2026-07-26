@@ -8,32 +8,33 @@
 
 <title>Compare AI</title>
 
+
 <style>
 
 *{
 box-sizing:border-box;
 }
 
+
 body{
-
-font-family:"Segoe UI", Arial, sans-serif;
-
-background:
-linear-gradient(135deg,#667eea,#764ba2);
-
-min-height:100vh;
 
 margin:0;
 
-padding:25px;
+font-family:Arial, sans-serif;
+
+background:
+linear-gradient(135deg,#4f46e5,#9333ea);
+
+min-height:100vh;
 
 display:flex;
 
 justify-content:center;
 
-align-items:center;
+padding:25px;
 
 }
+
 
 
 .container{
@@ -42,23 +43,24 @@ background:white;
 
 width:100%;
 
-max-width:900px;
-
-padding:35px;
+max-width:950px;
 
 border-radius:30px;
 
+padding:35px;
+
 box-shadow:
-0 20px 50px rgba(0,0,0,0.25);
+0 20px 50px rgba(0,0,0,0.3);
 
 }
 
 
-h1{
 
-font-size:48px;
+.logo{
 
-margin-bottom:5px;
+font-size:50px;
+
+font-weight:bold;
 
 background:
 linear-gradient(90deg,#2563eb,#9333ea);
@@ -71,11 +73,13 @@ color:transparent;
 
 
 
-p{
+.subtitle{
+
+font-size:22px;
 
 color:#555;
 
-font-size:20px;
+margin-bottom:30px;
 
 }
 
@@ -85,7 +89,7 @@ input{
 
 width:90%;
 
-max-width:600px;
+max-width:650px;
 
 padding:18px;
 
@@ -97,19 +101,15 @@ border:2px solid #ddd;
 
 font-size:20px;
 
-transition:.3s;
-
 }
 
 
 
 input:focus{
 
-border-color:#6366f1;
-
 outline:none;
 
-box-shadow:0 0 10px #6366f1;
+border-color:#6366f1;
 
 }
 
@@ -117,22 +117,22 @@ box-shadow:0 0 10px #6366f1;
 
 button{
 
-background:
-linear-gradient(90deg,#2563eb,#7c3aed);
-
-color:white;
-
-border:none;
-
 padding:16px 35px;
 
-margin:8px;
+border:0;
 
 border-radius:15px;
 
 font-size:18px;
 
 cursor:pointer;
+
+margin:8px;
+
+background:
+linear-gradient(90deg,#2563eb,#7c3aed);
+
+color:white;
 
 transition:.3s;
 
@@ -142,10 +142,15 @@ transition:.3s;
 
 button:hover{
 
-transform:translateY(-3px);
+transform:scale(1.05);
 
-box-shadow:
-0 8px 20px rgba(0,0,0,.2);
+}
+
+
+
+.result{
+
+margin-top:30px;
 
 }
 
@@ -155,15 +160,13 @@ table{
 
 width:100%;
 
-margin-top:30px;
+border-collapse:collapse;
 
-border-collapse:separate;
-
-border-spacing:0;
-
-overflow:hidden;
+margin-top:25px;
 
 border-radius:15px;
+
+overflow:hidden;
 
 }
 
@@ -203,18 +206,17 @@ font-size:30px;
 
 margin-top:30px;
 
+background:#fef3c7;
+
 padding:20px;
 
 border-radius:20px;
 
-background:
-linear-gradient(135deg,#fef3c7,#fde68a);
+font-size:30px;
 
-font-size:32px;
+font-weight:bold;
 
 color:#92400e;
-
-box-shadow:0 5px 15px #ddd;
 
 }
 
@@ -222,13 +224,13 @@ box-shadow:0 5px 15px #ddd;
 
 .explanation{
 
+margin-top:20px;
+
 background:#f8fafc;
 
-padding:20px;
+padding:25px;
 
 border-radius:20px;
-
-margin-top:20px;
 
 line-height:1.8;
 
@@ -240,7 +242,7 @@ font-size:18px;
 
 .history{
 
-margin-top:25px;
+margin-top:30px;
 
 background:#f1f5f9;
 
@@ -252,7 +254,7 @@ border-radius:20px;
 
 
 
-.item{
+.history-item{
 
 background:white;
 
@@ -262,13 +264,13 @@ margin:10px;
 
 border-radius:15px;
 
-box-shadow:0 3px 10px #ddd;
-
 }
 
 
 
 </style>
+
+
 </head>
 
 
@@ -277,25 +279,36 @@ box-shadow:0 3px 10px #ddd;
 
 <div class="container">
 
-<h1>🧠 Compare AI</h1>
 
-<p>
-השווה בין שני דברים וקבל החלטה חכמה
-</p>
+<div class="logo">
+🧠 Compare AI
+</div>
 
 
-<input id="first" placeholder="הכנס דבר ראשון">
+<div class="subtitle">
+
+השוואות חכמות בין אנשים, מקומות ודברים
+
+</div>
+
+
+
+<input id="first"
+placeholder="לדוגמה: מסי">
+
 
 <br>
 
-<input id="second" placeholder="הכנס דבר שני">
+
+<input id="second"
+placeholder="לדוגמה: רונאלדו">
 
 
 <br>
 
 
 <button onclick="compare()">
-השווה
+השווה 🚀
 </button>
 
 
@@ -305,18 +318,25 @@ box-shadow:0 3px 10px #ddd;
 
 
 <button onclick="clearHistory()">
-🗑 מחק היסטוריה
+🗑 ניקוי
 </button>
 
 
-<div id="result"></div>
 
-
-<div id="history"></div>
-
+<div id="result"
+class="result">
 
 </div>
 
+
+<div id="history"
+class="history">
+
+</div>
+
+
+
+</div>
 
 
 <script>
@@ -326,22 +346,314 @@ let history =
 JSON.parse(localStorage.getItem("compareHistory")) || [];
 
 
+// חלק 2 ייכנס כאן:
+// מאגר המידע של השחקנים, הזמרים והיעדים
 
-function randomWinner(a,b){
+const database = {
 
-let r=Math.random();
 
-if(r<0.5){
-return a;
+// ⚽ כדורגלנים
+
+"מסי":{
+
+type:"כדורגל",
+
+stats:{
+
+"דריבל":10,
+"מסירות":10,
+"בעיטות":9,
+"מהירות":8,
+"כוח פיזי":7,
+"סיומת":9,
+"תארים":10
+
 }
 
-else{
-return b;
+},
+
+
+"רונאלדו":{
+
+type:"כדורגל",
+
+stats:{
+
+"דריבל":8,
+"מסירות":8,
+"בעיטות":10,
+"מהירות":9,
+"כוח פיזי":10,
+"סיומת":10,
+"תארים":10
+
+}
+
+},
+
+
+"אמבפה":{
+
+type:"כדורגל",
+
+stats:{
+
+"דריבל":9,
+"מסירות":8,
+"בעיטות":9,
+"מהירות":10,
+"כוח פיזי":8,
+"סיומת":9,
+"תארים":8
+
+}
+
+},
+
+
+"האלנד":{
+
+type:"כדורגל",
+
+stats:{
+
+"דריבל":7,
+"מסירות":7,
+"בעיטות":10,
+"מהירות":9,
+"כוח פיזי":10,
+"סיומת":10,
+"תארים":8
+
+}
+
+},
+
+
+"בלינגהאם":{
+
+type:"כדורגל",
+
+stats:{
+
+"דריבל":9,
+"מסירות":9,
+"בעיטות":8,
+"מהירות":8,
+"כוח פיזי":9,
+"סיומת":8,
+"תארים":7
+
+}
+
+},
+
+
+// 🎤 זמרים ישראלים
+
+
+"עומר אדם":{
+
+type:"מוזיקה",
+
+stats:{
+
+"קול":9,
+"הופעות":10,
+"להיטים":10,
+"כתיבה":8,
+"פופולריות":10,
+"השפעה":9
+
+}
+
+},
+
+
+"אייל גולן":{
+
+type:"מוזיקה",
+
+stats:{
+
+"קול":10,
+"הופעות":9,
+"להיטים":10,
+"כתיבה":8,
+"פופולריות":10,
+"השפעה":10
+
+}
+
+},
+
+
+"עדן חסון":{
+
+type:"מוזיקה",
+
+stats:{
+
+"קול":9,
+"הופעות":9,
+"להיטים":9,
+"כתיבה":9,
+"פופולריות":9,
+"השפעה":8
+
+}
+
+},
+
+
+"נועה קירל":{
+
+type:"מוזיקה",
+
+stats:{
+
+"קול":8,
+"הופעות":10,
+"להיטים":10,
+"כתיבה":8,
+"פופולריות":10,
+"השפעה":9
+
+}
+
+},
+
+
+"אודיה":{
+
+type:"מוזיקה",
+
+stats:{
+
+"קול":9,
+"הופעות":8,
+"להיטים":9,
+"כתיבה":10,
+"פופולריות":9,
+"השפעה":8
+
+}
+
+},
+
+
+
+// 🌍 יעדים
+
+
+"אילת":{
+
+type:"יעד",
+
+stats:{
+
+"חופים":10,
+"אטרקציות":9,
+"אוכל":8,
+"מחיר":8,
+"מזג אוויר":10
+
+}
+
+},
+
+
+"ברצלונה":{
+
+type:"יעד",
+
+stats:{
+
+"חופים":8,
+"אטרקציות":10,
+"אוכל":10,
+"מחיר":7,
+"מזג אוויר":9
+
+}
+
+},
+
+
+"פריז":{
+
+type:"יעד",
+
+stats:{
+
+"חופים":5,
+"אטרקציות":10,
+"אוכל":10,
+"מחיר":6,
+"מזג אוויר":7
+
+}
+
+},
+
+
+"לונדון":{
+
+type:"יעד",
+
+stats:{
+
+"חופים":4,
+"אטרקציות":10,
+"אוכל":9,
+"מחיר":6,
+"מזג אוויר":6
+
+}
+
+},
+
+
+
+// 📱 טכנולוגיה
+
+
+"אייפון":{
+
+type:"טכנולוגיה",
+
+stats:{
+
+"מצלמה":10,
+"ביצועים":10,
+"סוללה":8,
+"עיצוב":10,
+"מחיר":6
+
+}
+
+},
+
+
+"גלקסי":{
+
+type:"טכנולוגיה",
+
+stats:{
+
+"מצלמה":9,
+"ביצועים":9,
+"סוללה":10,
+"עיצוב":9,
+"מחיר":8
+
 }
 
 }
 
-
+};
+  
+// מנוע השוואה
 
 function compare(){
 
@@ -355,20 +667,30 @@ document.getElementById("second").value.trim();
 
 
 
-if(!first || !second){
+if(!database[first] || !database[second]){
 
-alert("צריך להכניס שני דברים");
-return;
-
-}
-
-
-
-if(first.toLowerCase()==second.toLowerCase()){
 
 document.getElementById("result").innerHTML=
+
 `
-<h2>😄 אי אפשר להשוות משהו לעצמו</h2>
+
+<div class="explanation">
+
+❌ כרגע אין לי מידע על אחד הדברים.
+
+נסה שמות מתוך המאגר:
+<br><br>
+
+⚽ מסי, רונאלדו, אמבפה, האלנד
+<br>
+🎤 עומר אדם, אייל גולן, נועה קירל
+<br>
+🌍 אילת, ברצלונה, פריז
+<br>
+📱 אייפון, גלקסי
+
+</div>
+
 `;
 
 return;
@@ -377,136 +699,110 @@ return;
 
 
 
-let text =
-(first+" "+second).toLowerCase();
+if(first===second){
 
+document.getElementById("result").innerHTML=
 
+"<h2>😄 אי אפשר להשוות משהו לעצמו</h2>";
 
-let categories=[];
-
-let type="השוואה כללית";
-
-
-
-if(
-text.includes("מסי") ||
-text.includes("רונאלדו") ||
-text.includes("אמבפה") ||
-text.includes("האלנד")
-){
-
-
-type="⚽ כדורגל";
-
-
-categories=[
-
-"מהירות",
-"בעיטות",
-"דריבל",
-"מסירות",
-"כוח פיזי",
-"סיומת"
-
-];
-
+return;
 
 }
 
 
 
-else if(
-text.includes("אייפון") ||
-text.includes("גלקסי") ||
-text.includes("iphone") ||
-text.includes("samsung")
-){
+let stats1 = database[first].stats;
+let stats2 = database[second].stats;
 
 
-type="📱 טכנולוגיה";
+let categories =
+Object.keys(stats1);
 
-
-categories=[
-
-"מצלמה",
-"סוללה",
-"ביצועים",
-"מחיר",
-"עיצוב"
-
-];
-
-
-}
-
-
-else{
-
-
-categories=[
-
-"איכות",
-"מחיר",
-"נוחות",
-"פופולריות",
-"יתרונות"
-
-];
-
-
-}
 
 
 let scoreFirst = 0;
 let scoreSecond = 0;
 
+
 let rows = "";
 
-let details = [];
+let explanation = "";
 
 
 
-categories.forEach(category => {
+categories.forEach(category=>{
 
 
-let winner = randomWinner(first, second);
+let value1 = stats1[category] || 0;
+
+let value2 = stats2[category] || 0;
 
 
-if(winner === first){
+let winner;
 
+
+
+if(value1 > value2){
+
+winner = first;
 scoreFirst++;
 
 }
+
 else{
 
+winner = second;
 scoreSecond++;
 
 }
 
 
-rows += `
+
+rows +=
+
+`
 
 <tr>
 
 <td>${category}</td>
 
 <td class="check">
-${winner === first ? "✅" : ""}
+
+${winner===first ? "✅" : ""}
+
+<br>
+
+${value1}/10
+
 </td>
 
 
 <td class="check">
-${winner === second ? "✅" : ""}
+
+${winner===second ? "✅" : ""}
+
+<br>
+
+${value2}/10
+
 </td>
+
 
 </tr>
 
 `;
 
 
-details.push(
-`${category}: היתרון אצל ${winner}`
-);
+
+explanation +=
+
+`
+• בקטגוריית <b>${category}</b>:
+${winner} קיבל יתרון 
+(${value1 > value2 ? value1 : value2} נקודות).
+<br>
+`;
+
 
 
 });
@@ -515,65 +811,33 @@ details.push(
 
 let finalWinner;
 
+
+
 if(scoreFirst > scoreSecond){
 
 finalWinner = first;
 
 }
 
-else if(scoreSecond > scoreFirst){
+else{
 
 finalWinner = second;
 
 }
 
-else{
-
-finalWinner = randomWinner(first, second);
-
-}
 
 
+let result =
 
-let explanation = `
+`
 
-ההשוואה בין <b>${first}</b> לבין <b>${second}</b> נבדקה לפי ${categories.length} קטגוריות בתחום ${type}.
+<h2>${first} 🆚 ${second}</h2>
 
-<br><br>
-
-`;
-
-
-
-details.forEach(d=>{
-
-explanation += "• " + d + "<br>";
-
-});
-
-
-
-explanation += `
-
-<br>
-
-בסיכום הכולל, ${finalWinner} קיבל יותר יתרונות בקטגוריות שנבדקו ולכן נבחר כמנצח.
-
-חשוב לזכור: התוצאה מבוססת על קטגוריות ההשוואה ולא אומרת שכל אדם בהכרח יעדיף אותו.
-
-`;
-
-
-
-let result = `
-
-
-<h2>${first} מול ${second}</h2>
-
-<h3>${type}</h3>
+<h3>${database[first].type}</h3>
 
 
 <table>
+
 
 <tr>
 
@@ -592,6 +856,7 @@ ${rows}
 </table>
 
 
+
 <div class="winner">
 
 🏆 המנצח: ${finalWinner}
@@ -599,19 +864,39 @@ ${rows}
 </div>
 
 
+
 <div class="explanation">
+
+
+<h3>למה?</h3>
+
 
 ${explanation}
 
-</div>
 
+<br>
+
+
+בסיכום:
+
+<b>${finalWinner}</b> ניצח ב־
+
+${finalWinner===first ? scoreFirst : scoreSecond}
+
+מתוך ${categories.length} קטגוריות.
+
+
+</div>
 
 `;
 
 
 
-document.getElementById("result").innerHTML = result;
+document.getElementById("result").innerHTML=result;
 
+
+
+// שמירת היסטוריה
 
 
 let save = {
@@ -632,7 +917,7 @@ history.unshift(save);
 
 
 
-if(history.length > 20){
+if(history.length>20){
 
 history.pop();
 
@@ -641,8 +926,11 @@ history.pop();
 
 
 localStorage.setItem(
+
 "compareHistory",
+
 JSON.stringify(history)
+
 );
 
 
@@ -652,10 +940,15 @@ JSON.stringify(history)
 
 
 
+// הצגת היסטוריה
+
+
 function showHistory(){
 
 
-let box = document.getElementById("history");
+let box =
+document.getElementById("history");
+
 
 
 if(history.length===0){
@@ -669,35 +962,46 @@ return;
 
 
 
-let html = `
-
-<h2>📜 השוואות אחרונות</h2>
-
-`;
+let html =
+"<h2>📜 השוואות אחרונות</h2>";
 
 
 
 history.forEach(item=>{
 
 
-html += `
+html +=
 
-<div class="item">
+`
 
-<b>${item.first}</b> מול <b>${item.second}</b>
+<div class="history-item">
+
+
+<b>${item.first}</b>
+
+מול
+
+<b>${item.second}</b>
+
 
 <br>
+
 
 🏆 ${item.winner}
 
+
 <br>
 
+
 ${item.date}
+
 
 </div>
 
 
 `;
+
+
 
 });
 
@@ -706,6 +1010,7 @@ box.innerHTML = html;
 
 
 }
+
 
 
 
@@ -721,11 +1026,11 @@ localStorage.removeItem(
 );
 
 
-document.getElementById("history").innerHTML =
+document.getElementById("history").innerHTML=
+
 "<h3>ההיסטוריה נמחקה</h3>";
 
 }
-
 
 </script>
 
