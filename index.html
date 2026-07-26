@@ -26,32 +26,46 @@
 🧠 Compare AI
 </h1>
 
+
 <p>
 השוואות חכמות בין אנשים, מקומות ודברים
 </p>
 
+
 </header>
+
 
 
 <section class="compare-box">
 
 
+<h2>
+מה אתה רוצה להשוות?
+</h2>
+
+
+
 <input 
 id="first"
-placeholder="הכנס דבר ראשון">
+placeholder="לדוגמה: מסי">
+
 
 
 <input 
 id="second"
-placeholder="הכנס דבר שני">
+placeholder="לדוגמה: רונאלדו">
+
 
 
 <button onclick="compare()">
+
 🚀 השווה
+
 </button>
-<!-- אזור תוצאות -->
+<!-- תוצאות ההשוואה -->
 
 <section id="result" class="result">
+
 
 </section>
 
@@ -72,7 +86,7 @@ placeholder="הכנס דבר שני">
 
 <button onclick="clearHistory()">
 
-🗑 ניקוי היסטוריה
+🗑 ניקוי
 
 </button>
 
@@ -110,17 +124,29 @@ placeholder="הכנס דבר שני">
 </div>
 
 
+
 <!-- חיבור קבצי המערכת -->
 
-<script src="database.js"></script>
+<script src="database/football.js"></script>
+
+<script src="database/teams.js"></script>
+
+<script src="database/nba.js"></script>
+
+<script src="database/singers.js"></script>
+
+<script src="database/places.js"></script>
+
 
 <script src="app.js"></script>
 
 <script src="premium.js"></script>
 
 
+
 </body>
 
 </html>
+
 
 </section>
