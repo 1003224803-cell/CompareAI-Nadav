@@ -4,259 +4,12 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Compare AI</title>
 
-<style>
-
-*{
-box-sizing:border-box;
-}
-
-body{
-
-margin:0;
-
-font-family:Arial,sans-serif;
-
-background:linear-gradient(135deg,#4f46e5,#9333ea);
-
-min-height:100vh;
-
-display:flex;
-
-justify-content:center;
-
-padding:25px;
-
-}
-
-
-.container{
-
-background:white;
-
-width:100%;
-
-max-width:950px;
-
-border-radius:30px;
-
-padding:35px;
-
-box-shadow:0 20px 50px rgba(0,0,0,.3);
-
-}
-
-
-.logo{
-
-font-size:50px;
-
-font-weight:bold;
-
-background:linear-gradient(90deg,#2563eb,#9333ea);
-
--webkit-background-clip:text;
-
-color:transparent;
-
-}
-
-
-.subtitle{
-
-font-size:22px;
-
-color:#555;
-
-margin-bottom:30px;
-
-}
-
-
-input{
-
-width:90%;
-
-max-width:650px;
-
-padding:18px;
-
-margin:10px;
-
-border-radius:15px;
-
-border:2px solid #ddd;
-
-font-size:20px;
-
-}
-
-
-input:focus{
-
-outline:none;
-
-border-color:#6366f1;
-
-}
-
-
-button{
-
-padding:16px 35px;
-
-border:0;
-
-border-radius:15px;
-
-font-size:18px;
-
-cursor:pointer;
-
-margin:8px;
-
-background:linear-gradient(90deg,#2563eb,#7c3aed);
-
-color:white;
-
-transition:.3s;
-
-}
-
-
-button:hover{
-
-transform:scale(1.05);
-
-}
-
-
-.result{
-
-margin-top:30px;
-
-}
-
-
-table{
-
-width:100%;
-
-border-collapse:collapse;
-
-margin-top:25px;
-
-}
-
-
-th{
-
-background:#eef2ff;
-
-color:#3730a3;
-
-}
-
-
-td,th{
-
-padding:18px;
-
-border-bottom:1px solid #ddd;
-
-font-size:18px;
-
-}
-
-
-.check{
-
-font-size:30px;
-
-}
-
-
-.winner{
-
-margin-top:30px;
-
-background:#fef3c7;
-
-padding:20px;
-
-border-radius:20px;
-
-font-size:30px;
-
-font-weight:bold;
-
-color:#92400e;
-
-}
-
-
-.explanation{
-
-margin-top:20px;
-
-background:#f8fafc;
-
-padding:25px;
-
-border-radius:20px;
-
-line-height:1.8;
-
-font-size:18px;
-
-}
-
-
-.history{
-
-margin-top:30px;
-
-background:#f1f5f9;
-
-padding:20px;
-
-border-radius:20px;
-
-}
-
-
-.history-item{
-
-background:white;
-
-padding:15px;
-
-margin:10px;
-
-border-radius:15px;
-
-}
-
-
-.premium{
-
-background:linear-gradient(135deg,#facc15,#f59e0b);
-
-color:white;
-
-padding:25px;
-
-border-radius:25px;
-
-font-size:20px;
-
-}
-
-
-</style>
+<link rel="stylesheet" href="style.css">
 
 </head>
 
@@ -267,509 +20,107 @@ font-size:20px;
 <div class="container">
 
 
-<div class="logo">
+<header>
+
+<h1>
 🧠 Compare AI
-</div>
+</h1>
 
-
-<div class="subtitle">
+<p>
 השוואות חכמות בין אנשים, מקומות ודברים
-</div>
+</p>
+
+</header>
 
 
-<input id="first" placeholder="לדוגמה: מסי">
+<section class="compare-box">
 
 
-<br>
+<input 
+id="first"
+placeholder="הכנס דבר ראשון">
 
 
-<input id="second" placeholder="לדוגמה: רונאלדו">
-
-
-<br>
+<input 
+id="second"
+placeholder="הכנס דבר שני">
 
 
 <button onclick="compare()">
-השווה 🚀
+🚀 השווה
 </button>
+<!-- אזור תוצאות -->
+
+<section id="result" class="result">
+
+</section>
+
+
+
+<!-- כפתורי מערכת -->
+
+<section class="actions">
 
 
 <button onclick="showHistory()">
+
 📜 היסטוריה
+
 </button>
+
 
 
 <button onclick="clearHistory()">
-🗑 ניקוי
+
+🗑 ניקוי היסטוריה
+
 </button>
 
 
-<button onclick="openPremium()">
+
+<button onclick="openPremium()" class="premium-btn">
+
 💎 Premium
-</button>
-
-
-<div id="result" class="result">
-
-</div>
-
-
-<div id="history" class="history">
-
-</div>
-<script>
-
-let history =
-JSON.parse(localStorage.getItem("compareHistory")) || [];
-
-let premium =
-localStorage.getItem("premium") === "true";
-
-
-// 🧠 מאגר מידע
-
-// 🚀 מנוע השוואה
-
-function compare(){
-
-
-let first =
-document.getElementById("first").value.trim();
-
-
-let second =
-document.getElementById("second").value.trim();
-
-
-
-if(!database[first] || !database[second]){
-
-
-document.getElementById("result").innerHTML=
-
-`
-<div class="explanation">
-
-❌ אין לי מידע על אחד הדברים.
-
-נסה לדוגמה:
-
-<br><br>
-
-מסי, רונאלדו, אמבפה, האלנד
-
-<br>
-
-עומר אדם, נועה קירל
-
-<br>
-
-אילת, ברצלונה
-
-<br>
-
-אייפון, גלקסי
-
-</div>
-`;
-
-return;
-
-}
-
-
-
-if(first===second){
-
-document.getElementById("result").innerHTML=
-"😄 אי אפשר להשוות משהו לעצמו";
-
-return;
-
-}
-
-
-
-let stats1 = database[first].stats;
-
-let stats2 = database[second].stats;
-
-
-let categories =
-Object.keys(stats1);
-
-
-
-let scoreFirst=0;
-
-let scoreSecond=0;
-
-
-let rows="";
-
-let explanation="";
-
-
-
-categories.forEach(category=>{
-
-
-let a =
-stats1[category] || 0;
-
-
-let b =
-stats2[category] || 0;
-
-
-
-let winner;
-
-
-
-if(a>b){
-
-winner=first;
-scoreFirst++;
-
-}
-
-else if(b>a){
-
-winner=second;
-scoreSecond++;
-
-}
-
-else{
-
-winner="שניהם";
-
-}
-
-
-
-rows+=`
-
-<tr>
-
-<td>${category}</td>
-
-<td>
-
-${winner===first?"✅":""}
-
-<br>${a}/10
-
-</td>
-
-
-<td>
-
-${winner===second?"✅":""}
-
-<br>${b}/10
-
-</td>
-
-
-</tr>
-
-`;
-
-
-
-if(winner!=="שניהם"){
-
-explanation+=`
-
-• בקטגוריית <b>${category}</b>:
-
-${winner} מוביל עם ${Math.max(a,b)}/10.
-
-<br>
-
-`;
-
-}
-
-
-});
-
-
-
-let finalWinner;
-
-
-
-if(scoreFirst>scoreSecond){
-
-finalWinner=first;
-
-}
-
-else if(scoreSecond>scoreFirst){
-
-finalWinner=second;
-
-}
-
-else{
-
-finalWinner="תיקו";
-
-}
-
-
-
-document.getElementById("result").innerHTML=
-
-`
-
-<h2>${first} 🆚 ${second}</h2>
-
-
-<h3>${database[first].type}</h3>
-
-
-<table>
-
-<tr>
-
-<th>קטגוריה</th>
-
-<th>${first}</th>
-
-<th>${second}</th>
-
-</tr>
-
-
-${rows}
-
-
-</table>
-
-
-<div class="winner">
-
-🏆 ${finalWinner}
-
-</div>
-
-
-<div class="explanation">
-
-<h3>הסבר:</h3>
-
-${explanation}
-
-</div>
-
-`;
-
-
-
-history.unshift({
-
-first:first,
-
-second:second,
-
-winner:finalWinner,
-
-date:new Date().toLocaleString("he-IL")
-
-});
-
-
-if(history.length>20){
-
-history.pop();
-
-}
-
-
-localStorage.setItem(
-"compareHistory",
-JSON.stringify(history)
-);
-
-
-}
-  
-// 📜 הצגת היסטוריה
-
-function showHistory(){
-
-
-let box =
-document.getElementById("history");
-
-
-
-if(history.length===0){
-
-box.innerHTML =
-"<h3>אין עדיין השוואות</h3>";
-
-return;
-
-}
-
-
-
-let html =
-"<h2>📜 השוואות אחרונות</h2>";
-
-
-
-history.forEach(item=>{
-
-
-html+=`
-
-<div class="history-item">
-
-<b>${item.first}</b>
-
-🆚
-
-<b>${item.second}</b>
-
-<br>
-
-🏆 ${item.winner}
-
-<br>
-
-${item.date}
-
-</div>
-
-`;
-
-});
-
-
-box.innerHTML=html;
-
-
-}
-
-
-
-// 🗑 ניקוי היסטוריה
-
-function clearHistory(){
-
-
-history=[];
-
-
-localStorage.removeItem("compareHistory");
-
-
-document.getElementById("history").innerHTML=
-
-"<h3>ההיסטוריה נמחקה</h3>";
-
-}
-
-
-
-// 💎 פתיחת Premium
-
-function openPremium(){
-
-
-document.getElementById("result").innerHTML=
-
-`
-
-<div class="premium">
-
-
-<h2>💎 Compare AI Premium</h2>
-
-
-<h3>הגרסה המתקדמת</h3>
-
-
-✅ השוואות ללא הגבלה
-
-<br>
-
-✅ הסברים חכמים יותר
-
-<br>
-
-✅ דירוג מתוך 100
-
-<br>
-
-✅ קטגוריות מיוחדות
-
-<br>
-
-✅ מאגר ענק יותר
-
-<br><br>
-
-
-<button onclick="activatePremium()">
-
-הפעל Premium
 
 </button>
 
 
-</div>
-
-`;
-
-}
+</section>
 
 
 
-// הפעלת Premium
+<!-- אזור היסטוריה -->
 
-function activatePremium(){
-
-
-localStorage.setItem("premium","true");
+<section id="history" class="history">
 
 
-premium=true;
+</section>
 
 
-document.getElementById("result").innerHTML=
 
-`
+<!-- אזור פרימיום -->
 
-<div class="winner">
+<section id="premium" class="premium">
 
-🎉 Premium הופעל בהצלחה!
+
+</section>
+  </section>
+
 
 </div>
 
 
-<div class="explanation">
+<!-- חיבור קבצי המערכת -->
 
-עכשיו יש לך גישה לגרסת הפרימיום של Compare AI.
-
-</div>
-
-`;
-
-}
-
-
-
-</script>
 <script src="database.js"></script>
+
 <script src="app.js"></script>
+
+<script src="premium.js"></script>
+
 
 </body>
 
 </html>
+
+</section>
