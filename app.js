@@ -1,6 +1,6 @@
 // מנוע Compare AI
 
-
+let database = window.database || {};
 let history = JSON.parse(
 
 localStorage.getItem("compareHistory")
