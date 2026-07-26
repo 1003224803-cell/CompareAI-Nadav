@@ -8,22 +8,19 @@
 
 <title>Compare AI</title>
 
-
 <style>
 
 *{
 box-sizing:border-box;
 }
 
-
 body{
 
 margin:0;
 
-font-family:Arial, sans-serif;
+font-family:Arial,sans-serif;
 
-background:
-linear-gradient(135deg,#4f46e5,#9333ea);
+background:linear-gradient(135deg,#4f46e5,#9333ea);
 
 min-height:100vh;
 
@@ -34,7 +31,6 @@ justify-content:center;
 padding:25px;
 
 }
-
 
 
 .container{
@@ -49,11 +45,9 @@ border-radius:30px;
 
 padding:35px;
 
-box-shadow:
-0 20px 50px rgba(0,0,0,0.3);
+box-shadow:0 20px 50px rgba(0,0,0,.3);
 
 }
-
 
 
 .logo{
@@ -62,15 +56,13 @@ font-size:50px;
 
 font-weight:bold;
 
-background:
-linear-gradient(90deg,#2563eb,#9333ea);
+background:linear-gradient(90deg,#2563eb,#9333ea);
 
 -webkit-background-clip:text;
 
 color:transparent;
 
 }
-
 
 
 .subtitle{
@@ -82,7 +74,6 @@ color:#555;
 margin-bottom:30px;
 
 }
-
 
 
 input{
@@ -104,7 +95,6 @@ font-size:20px;
 }
 
 
-
 input:focus{
 
 outline:none;
@@ -112,7 +102,6 @@ outline:none;
 border-color:#6366f1;
 
 }
-
 
 
 button{
@@ -129,15 +118,13 @@ cursor:pointer;
 
 margin:8px;
 
-background:
-linear-gradient(90deg,#2563eb,#7c3aed);
+background:linear-gradient(90deg,#2563eb,#7c3aed);
 
 color:white;
 
 transition:.3s;
 
 }
-
 
 
 button:hover{
@@ -147,13 +134,11 @@ transform:scale(1.05);
 }
 
 
-
 .result{
 
 margin-top:30px;
 
 }
-
 
 
 table{
@@ -164,12 +149,7 @@ border-collapse:collapse;
 
 margin-top:25px;
 
-border-radius:15px;
-
-overflow:hidden;
-
 }
-
 
 
 th{
@@ -179,7 +159,6 @@ background:#eef2ff;
 color:#3730a3;
 
 }
-
 
 
 td,th{
@@ -193,13 +172,11 @@ font-size:18px;
 }
 
 
-
 .check{
 
 font-size:30px;
 
 }
-
 
 
 .winner{
@@ -221,7 +198,6 @@ color:#92400e;
 }
 
 
-
 .explanation{
 
 margin-top:20px;
@@ -239,7 +215,6 @@ font-size:18px;
 }
 
 
-
 .history{
 
 margin-top:30px;
@@ -251,7 +226,6 @@ padding:20px;
 border-radius:20px;
 
 }
-
 
 
 .history-item{
@@ -267,9 +241,22 @@ border-radius:15px;
 }
 
 
+.premium{
+
+background:linear-gradient(135deg,#facc15,#f59e0b);
+
+color:white;
+
+padding:25px;
+
+border-radius:25px;
+
+font-size:20px;
+
+}
+
 
 </style>
-
 
 </head>
 
@@ -286,22 +273,17 @@ border-radius:15px;
 
 
 <div class="subtitle">
-
 השוואות חכמות בין אנשים, מקומות ודברים
-
 </div>
 
 
-
-<input id="first"
-placeholder="לדוגמה: מסי">
+<input id="first" placeholder="לדוגמה: מסי">
 
 
 <br>
 
 
-<input id="second"
-placeholder="לדוגמה: רונאלדו">
+<input id="second" placeholder="לדוגמה: רונאלדו">
 
 
 <br>
@@ -322,44 +304,35 @@ placeholder="לדוגמה: רונאלדו">
 </button>
 
 
-
-<div id="result"
-class="result">
-
-</div>
+<button onclick="openPremium()">
+💎 Premium
+</button>
 
 
-<div id="history"
-class="history">
+<div id="result" class="result">
 
 </div>
 
 
+<div id="history" class="history">
 
 </div>
-
-
 <script>
-
 
 let history =
 JSON.parse(localStorage.getItem("compareHistory")) || [];
 
+let premium =
+localStorage.getItem("premium") === "true";
 
-// חלק 2 ייכנס כאן:
-// מאגר המידע של השחקנים, הזמרים והיעדים
+
+// 🧠 מאגר מידע
 
 const database = {
 
-
-// ⚽ כדורגלנים
-
 "מסי":{
-
 type:"כדורגל",
-
 stats:{
-
 "דריבל":10,
 "מסירות":10,
 "בעיטות":9,
@@ -367,18 +340,13 @@ stats:{
 "כוח פיזי":7,
 "סיומת":9,
 "תארים":10
-
 }
-
 },
 
 
 "רונאלדו":{
-
 type:"כדורגל",
-
 stats:{
-
 "דריבל":8,
 "מסירות":8,
 "בעיטות":10,
@@ -386,18 +354,13 @@ stats:{
 "כוח פיזי":10,
 "סיומת":10,
 "תארים":10
-
 }
-
 },
 
 
 "אמבפה":{
-
 type:"כדורגל",
-
 stats:{
-
 "דריבל":9,
 "מסירות":8,
 "בעיטות":9,
@@ -405,18 +368,13 @@ stats:{
 "כוח פיזי":8,
 "סיומת":9,
 "תארים":8
-
 }
-
 },
 
 
 "האלנד":{
-
 type:"כדורגל",
-
 stats:{
-
 "דריבל":7,
 "מסירות":7,
 "בעיטות":10,
@@ -424,236 +382,114 @@ stats:{
 "כוח פיזי":10,
 "סיומת":10,
 "תארים":8
-
 }
-
 },
-
-
-"בלינגהאם":{
-
-type:"כדורגל",
-
-stats:{
-
-"דריבל":9,
-"מסירות":9,
-"בעיטות":8,
-"מהירות":8,
-"כוח פיזי":9,
-"סיומת":8,
-"תארים":7
-
-}
-
-},
-
-
-// 🎤 זמרים ישראלים
 
 
 "עומר אדם":{
-
 type:"מוזיקה",
-
 stats:{
-
 "קול":9,
 "הופעות":10,
 "להיטים":10,
 "כתיבה":8,
 "פופולריות":10,
 "השפעה":9
-
 }
-
-},
-
-
-"אייל גולן":{
-
-type:"מוזיקה",
-
-stats:{
-
-"קול":10,
-"הופעות":9,
-"להיטים":10,
-"כתיבה":8,
-"פופולריות":10,
-"השפעה":10
-
-}
-
-},
-
-
-"עדן חסון":{
-
-type:"מוזיקה",
-
-stats:{
-
-"קול":9,
-"הופעות":9,
-"להיטים":9,
-"כתיבה":9,
-"פופולריות":9,
-"השפעה":8
-
-}
-
 },
 
 
 "נועה קירל":{
-
 type:"מוזיקה",
-
 stats:{
-
 "קול":8,
 "הופעות":10,
 "להיטים":10,
 "כתיבה":8,
 "פופולריות":10,
 "השפעה":9
-
 }
-
 },
-
-
-"אודיה":{
-
-type:"מוזיקה",
-
-stats:{
-
-"קול":9,
-"הופעות":8,
-"להיטים":9,
-"כתיבה":10,
-"פופולריות":9,
-"השפעה":8
-
-}
-
-},
-
-
-
-// 🌍 יעדים
 
 
 "אילת":{
-
 type:"יעד",
-
 stats:{
-
 "חופים":10,
 "אטרקציות":9,
 "אוכל":8,
 "מחיר":8,
 "מזג אוויר":10
-
 }
-
 },
 
 
 "ברצלונה":{
-
 type:"יעד",
-
 stats:{
-
 "חופים":8,
 "אטרקציות":10,
 "אוכל":10,
 "מחיר":7,
 "מזג אוויר":9
-
 }
-
 },
-
-
-"פריז":{
-
-type:"יעד",
-
-stats:{
-
-"חופים":5,
-"אטרקציות":10,
-"אוכל":10,
-"מחיר":6,
-"מזג אוויר":7
-
-}
-
-},
-
-
-"לונדון":{
-
-type:"יעד",
-
-stats:{
-
-"חופים":4,
-"אטרקציות":10,
-"אוכל":9,
-"מחיר":6,
-"מזג אוויר":6
-
-}
-
-},
-
-
-
-// 📱 טכנולוגיה
 
 
 "אייפון":{
-
 type:"טכנולוגיה",
-
 stats:{
-
 "מצלמה":10,
 "ביצועים":10,
 "סוללה":8,
 "עיצוב":10,
 "מחיר":6
-
 }
-
 },
 
 
 "גלקסי":{
-
 type:"טכנולוגיה",
-
 stats:{
-
 "מצלמה":9,
 "ביצועים":9,
 "סוללה":10,
 "עיצוב":9,
 "מחיר":8
-
 }
+},
 
+
+"סטף קרי":{
+type:"NBA",
+stats:{
+"קליעה":10,
+"שלשות":10,
+"דריבל":9,
+"הגנה":7,
+"אתלטיות":8,
+"מנהיגות":10
+}
+},
+
+
+"לברון":{
+type:"NBA",
+stats:{
+"קליעה":9,
+"שלשות":8,
+"דריבל":9,
+"הגנה":9,
+"אתלטיות":10,
+"מנהיגות":10
+}
 }
 
 };
-  
-// מנוע השוואה
+
+
+
+// 🚀 מנוע השוואה
 
 function compare(){
 
@@ -673,24 +509,29 @@ if(!database[first] || !database[second]){
 document.getElementById("result").innerHTML=
 
 `
-
 <div class="explanation">
 
-❌ כרגע אין לי מידע על אחד הדברים.
+❌ אין לי מידע על אחד הדברים.
 
-נסה שמות מתוך המאגר:
+נסה לדוגמה:
+
 <br><br>
 
-⚽ מסי, רונאלדו, אמבפה, האלנד
+מסי, רונאלדו, אמבפה, האלנד
+
 <br>
-🎤 עומר אדם, אייל גולן, נועה קירל
+
+עומר אדם, נועה קירל
+
 <br>
-🌍 אילת, ברצלונה, פריז
+
+אילת, ברצלונה
+
 <br>
-📱 אייפון, גלקסי
+
+אייפון, גלקסי
 
 </div>
-
 `;
 
 return;
@@ -702,8 +543,7 @@ return;
 if(first===second){
 
 document.getElementById("result").innerHTML=
-
-"<h2>😄 אי אפשר להשוות משהו לעצמו</h2>";
+"😄 אי אפשר להשוות משהו לעצמו";
 
 return;
 
@@ -712,6 +552,7 @@ return;
 
 
 let stats1 = database[first].stats;
+
 let stats2 = database[second].stats;
 
 
@@ -720,70 +561,75 @@ Object.keys(stats1);
 
 
 
-let scoreFirst = 0;
-let scoreSecond = 0;
+let scoreFirst=0;
+
+let scoreSecond=0;
 
 
-let rows = "";
+let rows="";
 
-let explanation = "";
+let explanation="";
 
 
 
 categories.forEach(category=>{
 
 
-let value1 = stats1[category] || 0;
+let a =
+stats1[category] || 0;
 
-let value2 = stats2[category] || 0;
+
+let b =
+stats2[category] || 0;
+
 
 
 let winner;
 
 
 
-if(value1 > value2){
+if(a>b){
 
-winner = first;
+winner=first;
 scoreFirst++;
+
+}
+
+else if(b>a){
+
+winner=second;
+scoreSecond++;
 
 }
 
 else{
 
-winner = second;
-scoreSecond++;
+winner="שניהם";
 
 }
 
 
 
-rows +=
-
-`
+rows+=`
 
 <tr>
 
 <td>${category}</td>
 
-<td class="check">
+<td>
 
-${winner===first ? "✅" : ""}
+${winner===first?"✅":""}
 
-<br>
-
-${value1}/10
+<br>${a}/10
 
 </td>
 
 
-<td class="check">
+<td>
 
-${winner===second ? "✅" : ""}
+${winner===second?"✅":""}
 
-<br>
-
-${value2}/10
+<br>${b}/10
 
 </td>
 
@@ -794,15 +640,19 @@ ${value2}/10
 
 
 
-explanation +=
+if(winner!=="שניהם"){
 
-`
+explanation+=`
+
 • בקטגוריית <b>${category}</b>:
-${winner} קיבל יתרון 
-(${value1 > value2 ? value1 : value2} נקודות).
+
+${winner} מוביל עם ${Math.max(a,b)}/10.
+
 <br>
+
 `;
 
+}
 
 
 });
@@ -813,31 +663,37 @@ let finalWinner;
 
 
 
-if(scoreFirst > scoreSecond){
+if(scoreFirst>scoreSecond){
 
-finalWinner = first;
+finalWinner=first;
+
+}
+
+else if(scoreSecond>scoreFirst){
+
+finalWinner=second;
 
 }
 
 else{
 
-finalWinner = second;
+finalWinner="תיקו";
 
 }
 
 
 
-let result =
+document.getElementById("result").innerHTML=
 
 `
 
 <h2>${first} 🆚 ${second}</h2>
 
+
 <h3>${database[first].type}</h3>
 
 
 <table>
-
 
 <tr>
 
@@ -856,35 +712,18 @@ ${rows}
 </table>
 
 
-
 <div class="winner">
 
-🏆 המנצח: ${finalWinner}
+🏆 ${finalWinner}
 
 </div>
 
 
-
 <div class="explanation">
 
-
-<h3>למה?</h3>
-
+<h3>הסבר:</h3>
 
 ${explanation}
-
-
-<br>
-
-
-בסיכום:
-
-<b>${finalWinner}</b> ניצח ב־
-
-${finalWinner===first ? scoreFirst : scoreSecond}
-
-מתוך ${categories.length} קטגוריות.
-
 
 </div>
 
@@ -892,14 +731,7 @@ ${finalWinner===first ? scoreFirst : scoreSecond}
 
 
 
-document.getElementById("result").innerHTML=result;
-
-
-
-// שמירת היסטוריה
-
-
-let save = {
+history.unshift({
 
 first:first,
 
@@ -909,12 +741,7 @@ winner:finalWinner,
 
 date:new Date().toLocaleString("he-IL")
 
-};
-
-
-
-history.unshift(save);
-
+});
 
 
 if(history.length>20){
@@ -924,24 +751,15 @@ history.pop();
 }
 
 
-
 localStorage.setItem(
-
 "compareHistory",
-
 JSON.stringify(history)
-
 );
 
 
-
 }
-
-
-
-
-// הצגת היסטוריה
-
+  
+// 📜 הצגת היסטוריה
 
 function showHistory(){
 
@@ -970,50 +788,39 @@ let html =
 history.forEach(item=>{
 
 
-html +=
-
-`
+html+=`
 
 <div class="history-item">
 
-
 <b>${item.first}</b>
 
-מול
+🆚
 
 <b>${item.second}</b>
 
-
 <br>
-
 
 🏆 ${item.winner}
 
-
 <br>
-
 
 ${item.date}
 
-
 </div>
 
-
 `;
-
-
 
 });
 
 
-box.innerHTML = html;
+box.innerHTML=html;
 
 
 }
 
 
 
-
+// 🗑 ניקוי היסטוריה
 
 function clearHistory(){
 
@@ -1021,18 +828,107 @@ function clearHistory(){
 history=[];
 
 
-localStorage.removeItem(
-"compareHistory"
-);
+localStorage.removeItem("compareHistory");
 
 
 document.getElementById("history").innerHTML=
 
 "<h3>ההיסטוריה נמחקה</h3>";
+
 }
 
+
+
+// 💎 פתיחת Premium
+
+function openPremium(){
+
+
+document.getElementById("result").innerHTML=
+
+`
+
+<div class="premium">
+
+
+<h2>💎 Compare AI Premium</h2>
+
+
+<h3>הגרסה המתקדמת</h3>
+
+
+✅ השוואות ללא הגבלה
+
+<br>
+
+✅ הסברים חכמים יותר
+
+<br>
+
+✅ דירוג מתוך 100
+
+<br>
+
+✅ קטגוריות מיוחדות
+
+<br>
+
+✅ מאגר ענק יותר
+
+<br><br>
+
+
+<button onclick="activatePremium()">
+
+הפעל Premium
+
+</button>
+
+
+</div>
+
+`;
+
+}
+
+
+
+// הפעלת Premium
+
+function activatePremium(){
+
+
+localStorage.setItem("premium","true");
+
+
+premium=true;
+
+
+document.getElementById("result").innerHTML=
+
+`
+
+<div class="winner">
+
+🎉 Premium הופעל בהצלחה!
+
+</div>
+
+
+<div class="explanation">
+
+עכשיו יש לך גישה לגרסת הפרימיום של Compare AI.
+
+</div>
+
+`;
+
+}
+
+
+
 </script>
-<script src="database.js"></script>  
+
 
 </body>
 
