@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Compare AI</title>
+
+<style>
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#e0e7ff,#ffffff);
+    text-align:center;
+    padding:30px;
+}
+
+.container {
+    background:white;
+    max-width:850px;
+    margin:auto;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 5px 25px #bbb;
+}
+
+h1 {
+    font-size:42px;
+}
+
+.subtitle {
+    font-size:20px;
+    color:#555;
+}
+
+input {
+    width:80%;
+    padding:15px;
+    margin:10px;
+    font-size:20px;
+    border-radius:12px;
+    border:1px solid #aaa;
+}
+
+button {
+    background:#2563eb;
+    color:white;
+    padding:15px 45px;
+    border:none;
+    border-radius:12px;
+    font-size:20px;
+    cursor:pointer;
+}
+
+button:hover {
+    background:#1d4ed8;
+}
+
+table {
+    width:100%;
+    margin-top:30px;
+    border-collapse:collapse;
+}
+
+th,td {
+    border:1px solid #ccc;
+    padding:15px;
+    font-size:18px;
+}
+
+th {
+    background:#eef2ff;
+}
+
+.check {
+    font-size:25px;
+}
+
+.winner {
+    margin-top:30px;
+    font-size:30px;
+    font-weight:bold;
+}
+
+.info {
+    margin-top:15px;
+    color:#555;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<h1>🧠 Compare AI</h1>
+
+<div class="subtitle">
+האפליקציה שעוזרת לך לבחור נכון
+</div>
+
+
+<br>
+
+
+<input id="first" placeholder="דבר ראשון">
+
+<br>
+
+<input id="second" placeholder="דבר שני">
+
+
+<br><br>
+
+
+<button onclick="compare()">
+השווה
+</button>
+
+
+<div id="result"></div>
+
+
+</div>
+
+
+
+<script>
+
+
+function compare(){
+
+
+let first =
+document.getElementById("first").value.trim();
+
+
+let second =
+document.getElementById("second").value.trim();
+
+
+
+if(!first || !second){
+
+alert("תכתוב שני דברים להשוואה");
+return;
+
+}
+
+
+
+if(first.toLowerCase() === second.toLowerCase()){
+
+document.getElementById("result").innerHTML =
+`
+<h2>😄 אי אפשר להשוות משהו לעצמו</h2>
+<p>נסה לבחור שני דברים שונים.</p>
+`;
+
+return;
+
+}
+
+
+
+let text =
+(first+" "+second).toLowerCase();
+
+
+
+let categories=[];
+let area="🔍 השוואה כללית";
+
+
+
+// זיהוי כדורגל
+
+if(
+
+text.includes("מסי") ||
+text.includes("רונאלדו") ||
+text.includes("אמבפה") ||
+text.includes("האלנד") ||
+text.includes("mbappe") ||
+text.includes("haaland")
+
+){
+
+
+area="⚽ כדורגל";
+
+
+categories=[
+
+["מהירות",2],
+["בעיטות",1],
+["דריבל",1],
+["סיומת",2],
+["מסירות",1],
+["כוח פיזי",2],
+["תארים",1],
+["השפעה במשחק",1]
+
+];
+
+
+}
+
+
+
+// טלפונים
+
+else if(
+
+text.includes("אייפון") ||
+text.includes("iphone") ||
+text.includes("גלקסי") ||
+text.includes("סמסונג") ||
+text.includes("samsung")
+
+){
+
+
+area="📱 טכנולוגיה";
+
+
+categories=[
+
+["מצלמה",1],
+["סוללה",2],
+["ביצועים",1],
+["מחיר",2],
+["עיצוב",1],
+["נוחות שימוש",1]
+
+];
+
+
+}
+
+
+
+// רכבים
+
+else if(
+
+text.includes("למבורגיני") ||
+text.includes("סקודה") ||
+text.includes("bmw") ||
+text.includes("מרצדס") ||
+text.includes("רכב")
+
+){
+
+
+area="🚗 רכבים";
+
+
+categories=[
+
+["מהירות",1],
+["מחיר",2],
+["נוחות",2],
+["אמינות",2],
+["עיצוב",1],
+["ביצועים",1]
+
+];
+
+
+}
+
+
+
+// כללי
+
+
+else {
+
+
+categories=[
+
+["איכות",1],
+["מחיר",2],
+["יתרונות",1],
+["שימושיות",2],
+["פופולריות",1]
+
+];
+
+
+}
+
+
+
+let score1=0;
+let score2=0;
+
+
+
+let html=`
+
+<h2>${first} מול ${second}</h2>
+
+<h3>${area}</h3>
+
+
+<table>
+
+<tr>
+<th>קטגוריה</th>
+<th>${first}</th>
+<th>${second}</th>
+</tr>
+
+`;
+
+
+
+categories.forEach(item=>{
+
+
+let name=item[0];
+let winner=item[1];
+
+
+if(winner===1){
+score1++;
+}
+
+else{
+score2++;
+}
+
+
+html+=`
+
+<tr>
+
+<td>${name}</td>
+
+<td class="check">
+${winner===1 ? "✅" : ""}
+</td>
+
+
+<td class="check">
+${winner===2 ? "✅" : ""}
+</td>
+
+
+</tr>
+
+`;
+
+
+});
+
+
+
+let finalWinner =
+score1 > score2 ? first : second;
+
+
+
+html+=`
+
+</table>
+
+
+<div class="winner">
+
+🏆 המנצח: ${finalWinner}
+
+</div>
+
+
+<div class="info">
+
+ההשוואה מבוססת על הקטגוריות החשובות בתחום.
+
+</div>
+
+`;
+
+
+
+document.getElementById("result").innerHTML=html;
+
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
