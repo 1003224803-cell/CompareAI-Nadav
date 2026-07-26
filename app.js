@@ -1,74 +1,43 @@
-// 🧠 Compare AI 2.0
-// מנוע ההשוואה
+// מנוע Compare AI
 
 
-// בדיקה שהמאגר נטען
+let history = JSON.parse(
 
-if(typeof database === "undefined"){
+localStorage.getItem("compareHistory")
 
-console.error(
-"❌ database.js לא נטען"
-);
-
-}
-
-
-
-// שמירת היסטוריה
-
-let history = 
-JSON.parse(localStorage.getItem("compareHistory")) || [];
+) || [];
 
 
 
 
-// פונקציית השוואה ראשית
 
 function compare(){
 
 
-let first =
-document.getElementById("first").value.trim();
-
-
-let second =
-document.getElementById("second").value.trim();
-
-
-
-let result =
-document.getElementById("result");
+let first = document
+.getElementById("first")
+.value
+.trim();
 
 
 
-if(!first || !second){
-
-result.innerHTML = `
-
-<div class="explanation">
-
-❌ צריך לכתוב שני דברים להשוואה
-
-</div>
-
-`;
-
-return;
-
-}
+let second = document
+.getElementById("second")
+.value
+.trim();
 
 
 
-// בדיקה אם קיימים במאגר
-
-if(!database[first] || !database[second]){
 
 
-result.innerHTML = `
+if(!window.database[first] || !window.database[second]){
 
-<div class="explanation">
 
-❌ אחד מהדברים לא נמצא במאגר.
+document.getElementById("result").innerHTML = `
+
+<div class="message">
+
+❌ לא מצאתי אחד מהפריטים במאגר.
 
 <br><br>
 
@@ -78,9 +47,12 @@ result.innerHTML = `
 
 `;
 
+
 return;
 
+
 }
+
 
 
 
@@ -88,9 +60,9 @@ return;
 if(first === second){
 
 
-result.innerHTML = `
+document.getElementById("result").innerHTML = `
 
-<div class="explanation">
+<div class="message">
 
 😄 אי אפשר להשוות משהו לעצמו
 
@@ -98,19 +70,21 @@ result.innerHTML = `
 
 `;
 
+
 return;
+
 
 }
 
 
 
-let firstData = database[first];
-
-let secondData = database[second];
 
 
+let firstData = window.database[first];
 
-// כאן ייכנס מנוע הניקוד
+let secondData = window.database[second];
+
+
 
 let stats1 = firstData.stats;
 
@@ -118,59 +92,61 @@ let stats2 = secondData.stats;
 
 
 
-let categories =
-Object.keys(stats1);
+let categories = Object.keys(stats1);
 
 
 
-let score1 = 0;
+let scoreFirst = 0;
 
-let score2 = 0;
+let scoreSecond = 0;
 
 
 let rows = "";
 
 let explanation = "";
-
+// בדיקת כל קטגוריה
 
 
 categories.forEach(category=>{
 
 
-let value1 =
-stats1[category] || 0;
+let value1 = stats1[category] || 0;
+
+let value2 = stats2[category] || 0;
 
 
-let value2 =
-stats2[category] || 0;
-
-
-
-let winner = "";
+let winner;
 
 
 
 if(value1 > value2){
 
+
 winner = first;
 
-score1++;
+scoreFirst++;
+
 
 }
 
 else if(value2 > value1){
 
+
 winner = second;
 
-score2++;
+scoreSecond++;
+
 
 }
 
 else{
 
-winner = "שניהם";
+
+winner = "תיקו";
+
 
 }
+
 
 
 
@@ -178,12 +154,17 @@ rows += `
 
 <tr>
 
-<td>${category}</td>
+<td>
+
+${category}
+
+</td>
+
 
 
 <td>
 
-${winner===first ? "✅" : ""}
+${winner === first ? "✅" : ""}
 
 <br>
 
@@ -192,9 +173,10 @@ ${value1}/10
 </td>
 
 
+
 <td>
 
-${winner===second ? "✅" : ""}
+${winner === second ? "✅" : ""}
 
 <br>
 
@@ -209,31 +191,37 @@ ${value2}/10
 
 
 
-if(winner !== "שניהם"){
 
 explanation += `
 
 • בקטגוריית <b>${category}</b>:
 
-${winner} מוביל.
+${winner === "תיקו" ? "יש תיקו" : winner + " קיבל יתרון"}
 
 <br>
 
 `;
 
-}
-// בחירת מנצח סופי
+
+
+});
+
+
+
+
+
 
 let finalWinner;
 
 
-if(score1 > score2){
+
+if(scoreFirst > scoreSecond){
 
 finalWinner = first;
 
 }
 
-else if(score2 > score1){
+else if(scoreSecond > scoreFirst){
 
 finalWinner = second;
 
@@ -247,26 +235,15 @@ finalWinner = "תיקו";
 
 
 
-// חישוב דירוג מתוך 100
+let winnerText = finalWinner === "תיקו"
 
-let totalCategories = categories.length;
+? "🤝 אין מנצח"
 
-let totalPoints = score1 + score2;
-
-
-let rating1 = 
-Math.round((score1 / totalCategories) * 100);
-
-
-let rating2 = 
-Math.round((score2 / totalCategories) * 100);
-
-
-
-
+: "🏆 המנצח: " + finalWinner;
 // הצגת תוצאה
 
-result.innerHTML = `
+
+let result = `
 
 
 <h2>
@@ -274,6 +251,7 @@ result.innerHTML = `
 ${first} 🆚 ${second}
 
 </h2>
+
 
 
 <h3>
@@ -289,13 +267,29 @@ ${firstData.type}
 
 <tr>
 
-<th>קטגוריה</th>
+<th>
 
-<th>${first}</th>
+קטגוריה
 
-<th>${second}</th>
+</th>
+
+
+<th>
+
+${first}
+
+</th>
+
+
+<th>
+
+${second}
+
+</th>
+
 
 </tr>
+
 
 
 ${rows}
@@ -305,10 +299,9 @@ ${rows}
 
 
 
-
 <div class="winner">
 
-🏆 המנצח: ${finalWinner}
+${winnerText}
 
 </div>
 
@@ -318,30 +311,42 @@ ${rows}
 <div class="explanation">
 
 
-<h3>🤖 ניתוח Compare AI:</h3>
+<h3>
+
+למה?
+
+</h3>
+
 
 
 ${explanation}
 
 
-<br><br>
-
-
-<h3>📊 דירוג כללי:</h3>
-
-
-${first}: ${rating1}/100
 
 <br>
 
-${second}: ${rating2}/100
+
+בסיכום:
+
+<br>
 
 
-<br><br>
+<b>${first}</b> ניצח ב־
+
+${scoreFirst}
+
+קטגוריות.
 
 
-Compare AI בדק ${totalCategories} קטגוריות
-והשווה לפי הנתונים במאגר.
+<br>
+
+
+<b>${second}</b> ניצח ב־
+
+${scoreSecond}
+
+קטגוריות.
+
 
 
 </div>
@@ -352,26 +357,43 @@ Compare AI בדק ${totalCategories} קטגוריות
 
 
 
-// שמירת השוואה בהיסטוריה
+document
+.getElementById("result")
+.innerHTML = result;
 
 
-history.unshift({
+
+
+
+
+// שמירת היסטוריה
+
+
+let save = {
+
 
 first:first,
 
+
 second:second,
+
 
 winner:finalWinner,
 
-date:new Date().toLocaleString("he-IL")
 
-});
+date:new Date()
+.toLocaleString("he-IL")
+
+
+};
 
 
 
-// שמירה רק של 50 אחרונות
+history.unshift(save);
 
-if(history.length > 50){
+
+
+if(history.length > 20){
 
 history.pop();
 
@@ -387,16 +409,15 @@ JSON.stringify(history)
 
 );
 
-
-
 }
-                   // 📜 הצגת היסטוריה
+// הצגת היסטוריה
+
 
 function showHistory(){
 
 
-let box =
-document.getElementById("history");
+let box = document
+.getElementById("history");
 
 
 
@@ -405,15 +426,17 @@ if(history.length === 0){
 
 box.innerHTML = `
 
-<div class="explanation">
+<div class="message">
 
-אין עדיין השוואות
+📜 אין עדיין השוואות
 
 </div>
 
 `;
 
+
 return;
+
 
 }
 
@@ -422,9 +445,14 @@ return;
 
 let html = `
 
-<h2>📜 היסטוריית השוואות</h2>
+<h2>
+
+📜 השוואות אחרונות
+
+</h2>
 
 `;
+
 
 
 
@@ -436,11 +464,21 @@ html += `
 <div class="history-item">
 
 
-<b>${item.first}</b>
+<b>
+
+${item.first}
+
+</b>
+
 
 🆚
 
-<b>${item.second}</b>
+
+<b>
+
+${item.second}
+
+</b>
 
 
 <br>
@@ -455,12 +493,15 @@ html += `
 ${item.date}
 
 
-</div>
 
+</div>
 
 `;
 
+
+
 });
+
 
 
 box.innerHTML = html;
@@ -471,7 +512,10 @@ box.innerHTML = html;
 
 
 
-// 🗑 ניקוי היסטוריה
+
+
+// ניקוי היסטוריה
+
 
 function clearHistory(){
 
@@ -479,13 +523,19 @@ function clearHistory(){
 history = [];
 
 
-localStorage.removeItem("compareHistory");
+localStorage.removeItem(
+
+"compareHistory"
+
+);
 
 
 
-document.getElementById("history").innerHTML = `
+document
+.getElementById("history")
+.innerHTML = `
 
-<div class="explanation">
+<div class="message">
 
 🗑 ההיסטוריה נמחקה
 
@@ -493,133 +543,6 @@ document.getElementById("history").innerHTML = `
 
 `;
 
-}
-
-
-
-
-// 💎 פתיחת מסך Premium
-
-function openPremium(){
-
-
-
-let isPremium =
-
-localStorage.getItem("premium") === "true";
-
-
-
-
-if(isPremium){
-
-
-document.getElementById("result").innerHTML = `
-
-<div class="premium">
-
-
-<h2>💎 אתה משתמש Premium</h2>
-
-
-<p>
-
-כל הפיצ'רים פתוחים 🚀
-
-</p>
-
-
-</div>
-
-`;
-
-return;
-
-}
-
-
-
-
-
-document.getElementById("result").innerHTML = `
-
-
-<div class="premium">
-
-
-<h2>💎 Compare AI Premium</h2>
-
-
-<p>
-
-קבל גישה לפיצ'רים מתקדמים:
-
-</p>
-
-
-<ul>
-
-
-<li>🤖 הסברים חכמים יותר</li>
-
-<li>📊 דירוגים מתקדמים</li>
-
-<li>📚 מאגר מורחב</li>
-
-<li>⚡ השוואות מיוחדות</li>
-
-<li>🖼 תמונות ופרטים נוספים</li>
-
-
-</ul>
-
-
-<br>
-
-
-<button onclick="activatePremium()">
-
-הפעל Premium
-
-</button>
-
-
-</div>
-
-
-`;
-
-}
-
-
-
-// הפעלת Premium (כרגע בדיקה)
-
-function activatePremium(){
-
-
-
-localStorage.setItem(
-
-"premium",
-
-"true"
-
-);
-
-
-
-alert(
-
-"🎉 Premium הופעל בהצלחה!"
-
-);
-
-
-
-openPremium();
 
 
 }
-
-});
